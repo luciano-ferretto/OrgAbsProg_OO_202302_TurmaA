@@ -19,7 +19,7 @@ public class CurtoCircuito {
          * Pois a segunda condição será verificada independente
          * do resultado da primeira. 
          */
-        if (num2 > 0 && num1 % num2 == 0) {
+        if (num2 > 0 & num1 % num2 == 0) {
             System.out.println(num2 + " é fator de " + num1);
         }
     }
