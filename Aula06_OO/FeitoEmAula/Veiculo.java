@@ -1,33 +1,61 @@
 import java.time.LocalDate;
 
 public class Veiculo {
-    String marca;
-    String modelo;
-    int ano;
+    public static int contador = 0;
+    static {
+        System.out.println("Bloco Estático executado");
+        contador = 0;
+    }
 
-    Veiculo() {
+    private String marca;
+    private String modelo;
+    private int ano;
+    public String getMarca() {
+        return marca;
+    }
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
+
+    public Veiculo() {
         this("MARCA NÃO DEFINIDA");
     }
     
-    Veiculo( String marca) {
+    public Veiculo( String marca) {
         this(marca, "MODELO NÃO DEFINIDO");
     }
-    Veiculo( String marca, String modelo) {
+    public Veiculo( String marca, String modelo) {
         this(marca, modelo, -1);
     }
-    Veiculo(int ano) {
-        //this("MARCA","MODELO",ano);
-        this.ano = ano;
+    public Veiculo(int ano) {
+        this("MARCA","MODELO",ano);
+        //this.ano = ano;
     }
     public Veiculo(String marca, String modelo, int ano) {
+        System.out.println("Método construtor executado");
         this.marca = marca;
         this.modelo = modelo;
         this.ano = ano;
+        Veiculo.contador++;
     }
 
 
 
-    Veiculo clonar() {
+    public  Veiculo clonar() {
         Veiculo veiculo = new Veiculo();
         veiculo.marca = this.marca;
         veiculo.modelo = this.modelo;
@@ -35,22 +63,22 @@ public class Veiculo {
         return veiculo;
     }
 
-    Veiculo clonarErrado() {
+    public Veiculo clonarErrado() {
         return this;
     }
 
-    int calculaTempoUso() {
+    public int calculaTempoUso() {
         int anoBase  = LocalDate.now().getYear();
         int tempo = this.calculaTempoUso(anoBase);
         return tempo;
     }
-    int calculaTempoUso(int anoBase) {
+    public int calculaTempoUso(int anoBase) {
         int tempo = anoBase - this.ano;
         return tempo;
         //System.out.println("Tempo de uso: " + tempo + " ano(s)");
     }
 
-    void ligar() {
+    public void ligar() {
         System.out.println("Veículo " + this.modelo + " ligado!");
     }
 }
