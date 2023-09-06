@@ -1,9 +1,11 @@
 import java.time.LocalDate;
 
-public class Veiculo {
+public abstract class Veiculo extends Object{
     private String marca;
     private String modelo;
     private int ano;
+
+    public abstract double calculaConsumo();
 
     @Override
     public String toString() {
@@ -42,13 +44,15 @@ public class Veiculo {
         this.ano = ano;
     }
 
-    public int calculaTempoUso() {
+    public final int calculaTempoUso() {
         int anoBase  = LocalDate.now().getYear();
         int tempo = this.calculaTempoUso(anoBase);
         return tempo;
     }
-    public int calculaTempoUso(int anoBase) {
+    public final int calculaTempoUso(int anoBase) {
         int tempo = anoBase - this.ano;
         return tempo;
     }
+
+
 }

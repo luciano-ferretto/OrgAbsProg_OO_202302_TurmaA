@@ -1,4 +1,4 @@
-public class Carro extends Veiculo{
+public final class Carro extends Veiculo{
     private int numeroPortas;
  
     @Override
@@ -8,9 +8,7 @@ public class Carro extends Veiculo{
     }
 
     public Carro(String marca, String modelo, int ano, int numeroPortas){
-        this.setMarca(marca);
-        this.setModelo(modelo);
-        this.setAno(ano);
+        super(marca, modelo, ano);
         this.numeroPortas = numeroPortas;
     }
 
@@ -19,5 +17,11 @@ public class Carro extends Veiculo{
     }
     public void setNumeroPortas(int numeroPortas) {
         this.numeroPortas = numeroPortas;
+    }
+
+    @Override
+    public double calculaConsumo() {
+        // Aqui codifica o cálculo específico para objetos Carro
+        return 8.0;
     }
 }

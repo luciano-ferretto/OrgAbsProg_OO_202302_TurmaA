@@ -6,13 +6,11 @@ public class Moto extends Veiculo{
     public String toString() {
         String partida = this.getPartidaEletrica() ? "SIM" : "NÃO";
         String texto = super.toString();
-        return texto + " - Partida Eletrica: " + partida;
+        return texto + ", Partida Elétrica: " + partida;
     }
 
     public Moto(String marca, String modelo, int ano, boolean partidaEletrica){
-        this.setMarca(marca);
-        this.setModelo(modelo);
-        this.setAno(ano);
+        super(marca, modelo, ano);
         this.partidaEletrica = partidaEletrica;
     }
 
@@ -21,5 +19,11 @@ public class Moto extends Veiculo{
     }
     public void setPartidaEletrica(boolean partidaEletrica) {
         this.partidaEletrica = partidaEletrica;
+    }
+
+    @Override
+    public double calculaConsumo() {
+        // Aqui codifica o cálculo específico para objetos Moto
+        return 20.0;
     }
 }
