@@ -17,6 +17,7 @@ public class CadVeiculo {
         meuVeiculo.ligar();
         //teuVeiculo.marca = "Volkswagem";
         teuVeiculo.setMarca("Volkswagem");
+        meuVeiculo.setMarca("Fiat - F... isto agora é teu");
         System.out.println("A marca atual do teuVeiculo é : " + teuVeiculo.getMarca());
         //teuVeiculo.modelo = "Fusca do Itamar";
         teuVeiculo.setModelo("Fusca do Itamar");
