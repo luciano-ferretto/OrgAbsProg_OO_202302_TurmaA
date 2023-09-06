@@ -1,9 +1,15 @@
 import java.time.LocalDate;
 
-public abstract class Veiculo extends Object{
+public abstract class Veiculo {
     private String marca;
     private String modelo;
     private int ano;
+
+    public final boolean verificaIPVA() {
+        int tempo = this.calculaTempoUso();
+        return tempo <= 20 ? true : false;
+        //if (tempo <= 20) return true; else return false;
+    }
 
     public abstract double calculaConsumo();
 

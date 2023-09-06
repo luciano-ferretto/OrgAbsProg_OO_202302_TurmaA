@@ -65,11 +65,18 @@ public class CadVeiculo {
 
     private static void cadastrar(Scanner scan) {
         limparTela();
-        System.out.println("Digite a marca do veículo: ");
+        System.out.println("Qual tipo de Veículo?");
+        System.out.println("1 - Carro");
+        System.out.println("2 - Moto");
+        int opcao = scan.nextInt();
+        scan.nextLine(); 
+        String tipoVeiculo = opcao == 1 ? "do Carro" : "da Moto";
+
+        System.out.println("Digite a marca " + tipoVeiculo + ": ");
         String marca = scan.nextLine();
-        System.out.println("Digite o modelo do veículo: ");
+        System.out.println("Digite o modelo " + tipoVeiculo + ": ");
         String modelo = scan.nextLine();
-        System.out.println("Digite o ano do veículo:");
+        System.out.println("Digite o ano " + tipoVeiculo + ":");
         int ano;
         while (true) {
             try {
@@ -81,7 +88,17 @@ public class CadVeiculo {
                 System.out.println("Formato inválido");
             }
         }
-        Veiculo veiculoAdd = new Veiculo(marca, modelo, ano);
+        Veiculo veiculoAdd;
+        if (opcao == 1) {
+            System.out.println("Digite o número de portas: ");
+            int nportas = scan.nextInt();
+            veiculoAdd = new Carro(marca, modelo, ano, nportas);
+        } else {
+            System.out.println("A Moto possui partida elétrica (1-Sim / 2-Não)");
+            boolean partida = scan.nextInt() == 1 ? true : false;
+            veiculoAdd = new Moto(marca, modelo, ano, partida);
+        }
+        
         veiculos.add(veiculoAdd);
         System.out.println("Veículo cadastrado com sucesso! - Pressione enter para continuar");
         scan.nextLine();
@@ -96,7 +113,7 @@ public class CadVeiculo {
                     + " - Marca: " + vei.getMarca()
                     + " - Modelo: " + vei.getModelo()
                     + " - Ano: " + vei.getAno());
-            System.out.println(" --- Idade: " + vei.calcularIdade());
+            System.out.println(" --- Idade: " + vei.calculaTempoUso());
             String pagaIPVA = vei.verificaIPVA() ? "Sim" : "Não";
             System.out.println(" --- Paga IPVA: " + pagaIPVA);
         }
