@@ -10,14 +10,18 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.atitus.atitusound.dtos.ArtistDTO;
 import br.edu.atitus.atitusound.entities.ArtistEntity;
 import br.edu.atitus.atitusound.services.ArtistService;
-import br.edu.atitus.atitusound.servicesimpl.ArtistServiceImpl;
 
 @RestController
 @RequestMapping("/artists")
 public class ArtistController {
 	
-	private ArtistService artistService = new ArtistServiceImpl();
+	private final ArtistService artistService;
 	
+	public ArtistController(ArtistService artistService) {
+		super();
+		this.artistService = artistService;
+	}
+
 	protected ArtistEntity convertDTO2Entity(ArtistDTO dto) {
 		ArtistEntity entidade = new ArtistEntity();
 		entidade.setName(dto.getName());

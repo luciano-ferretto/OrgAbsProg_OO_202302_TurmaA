@@ -1,8 +1,11 @@
 package br.edu.atitus.atitusound.servicesimpl;
 
+import org.springframework.stereotype.Service;
+
 import br.edu.atitus.atitusound.entities.ArtistEntity;
 import br.edu.atitus.atitusound.services.ArtistService;
 
+@Service
 public class ArtistServiceImpl implements ArtistService{
 
 	@Override
