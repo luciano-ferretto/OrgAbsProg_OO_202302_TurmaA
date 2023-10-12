@@ -2,6 +2,7 @@ package br.edu.atitus.atitusound.entities;
 
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +16,7 @@ public class ArtistEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID uuid;
+	@Column(nullable = false, length = 150)
 	private String name;
 	private String image;
 	public UUID getUuid() {
