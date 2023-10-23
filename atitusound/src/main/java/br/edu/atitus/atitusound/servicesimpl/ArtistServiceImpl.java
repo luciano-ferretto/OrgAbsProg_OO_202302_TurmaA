@@ -1,5 +1,9 @@
 package br.edu.atitus.atitusound.servicesimpl;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.edu.atitus.atitusound.entities.ArtistEntity;
@@ -14,10 +18,13 @@ public class ArtistServiceImpl implements ArtistService {
 		super();
 		this.artistRepository = artistRepository;
 	}
+	@Override
+	public Page<List<ArtistEntity>> findByNameContainingIgnoreCase(Pageable pageable, String name) throws Exception {
+		return artistRepository.findByNameContainingIgnoreCase(pageable, name);
+	}
 
 	@Override
 	public ArtistEntity save(ArtistEntity entidade) throws Exception {
-		// TODO executar validações
 		if (entidade.getName() == null || entidade.getName().isEmpty())
 			throw new Exception("Campo Name Inválido!");
 
@@ -31,5 +38,12 @@ public class ArtistServiceImpl implements ArtistService {
 		artistRepository.save(entidade);
 		return entidade;
 	}
+
+	@Override
+	public List<ArtistEntity> findAll() throws Exception {
+		return artistRepository.findAll();
+	}
+
+
 
 }
