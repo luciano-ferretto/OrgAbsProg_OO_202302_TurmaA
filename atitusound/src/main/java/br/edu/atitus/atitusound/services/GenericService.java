@@ -7,59 +7,61 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import br.edu.atitus.atitusound.entities.ArtistEntity;
 import br.edu.atitus.atitusound.entities.GenericEntity;
+import br.edu.atitus.atitusound.repositories.GenericRepository;
 
 public interface GenericService<TEntidade extends GenericEntity> {
+	
+	GenericRepository<TEntidade> getRepository();
 	
 	default void validateFindByName(Pageable pageable, String name) throws Exception {
 		
 	}
 	
-	default Page<List<ArtistEntity>> findByNameContainingIgnoreCase(Pageable pageable, String name) throws Exception {
+	default Page<List<TEntidade>> findByNameContainingIgnoreCase(Pageable pageable, String name) throws Exception {
 		validateFindByName(pageable, name);
-		return artistRepository.findByNameContainingIgnoreCase(pageable, name);
+		return getRepository().findByNameContainingIgnoreCase(pageable, name);
 	}
 	
-	default void validateSave(ArtistEntity entidade) throws Exception {
+	default void validateSave(TEntidade entidade) throws Exception {
 		if (entidade.getName() == null || entidade.getName().isEmpty())
 			throw new Exception("Campo Name Inválido!");
 
 		if (entidade.getUuid() == null) {
-			if (artistRepository.existsByName(entidade.getName()))
+			if (getRepository().existsByName(entidade.getName()))
 				throw new Exception("Já existe registro com este nome!");
 		} else {
-			if (!artistRepository.existsById(entidade.getUuid()))
+			if (!getRepository().existsById(entidade.getUuid()))
 				throw new Exception("Registro não encontrado com este UUID");
-			if (artistRepository.existsByNameAndUuidNot(entidade.getName(), entidade.getUuid()))
+			if (getRepository().existsByNameAndUuidNot(entidade.getName(), entidade.getUuid()))
 				throw new Exception("Já existe registro com este nome!");
 		}
 	}
 
-	default ArtistEntity save(ArtistEntity entidade) throws Exception {
+	default TEntidade save(TEntidade entidade) throws Exception {
 		validateSave(entidade);
-		artistRepository.save(entidade);
+		getRepository().save(entidade);
 		return entidade;
 	}
 
-	default List<ArtistEntity> findAll() throws Exception {
-		return artistRepository.findAll();
+	default List<TEntidade> findAll() throws Exception {
+		return getRepository().findAll();
 	}
 	default void validateFindById(UUID uuid) throws Exception {
 		
 	}
 
-	default Optional<ArtistEntity> findById(UUID uuid) throws Exception {
+	default Optional<TEntidade> findById(UUID uuid) throws Exception {
 		validateFindById(uuid);
-		return artistRepository.findById(uuid);
+		return getRepository().findById(uuid);
 	}
 	default void validateDeleteById(UUID uuid) throws Exception {
-		if (!artistRepository.existsById(uuid))
+		if (!getRepository().existsById(uuid))
 			throw new Exception("Registro não encontrado com este UUID");
 	}
 
 	default void deleteById(UUID uuid) throws Exception {
 		validateDeleteById(uuid);
-		artistRepository.deleteById(uuid);
+		getRepository().deleteById(uuid);
 	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,10 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.atitus.atitusound.dtos.ArtistDTO;
 import br.edu.atitus.atitusound.entities.ArtistEntity;
 import br.edu.atitus.atitusound.services.ArtistService;
+import br.edu.atitus.atitusound.services.GenericService;
 
 @RestController
 @RequestMapping("/artists")
-public class ArtistController {
+public class ArtistController extends GenericController<ArtistEntity, ArtistDTO>{
 
 	private final ArtistService artistService;
 
@@ -35,83 +37,16 @@ public class ArtistController {
 		this.artistService = artistService;
 	}
 
-
 	protected ArtistEntity convertDTO2Entity(ArtistDTO dto) {
 		ArtistEntity entidade = new ArtistEntity();
-		entidade.setName(dto.getName());
-		entidade.setImage(dto.getImage());
+		BeanUtils.copyProperties(dto, entidade);
 		return entidade;
 	}
-	
-	@GetMapping("/{uuid}")
-	public ResponseEntity<ArtistEntity> getById(@PathVariable UUID uuid) {
-		Optional<ArtistEntity> entidade;
-		try {
-			entidade = artistService.findById(uuid);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().header("error", e.getMessage()).build();
-		}
-		if (entidade.isEmpty())
-			return ResponseEntity.notFound().build();
-		else
-			return ResponseEntity.ok(entidade.get());
+
+	@Override
+	public GenericService<ArtistEntity> getService() {
+		return artistService;
 	}
-	
-	@GetMapping
-	public ResponseEntity<Page<List<ArtistEntity>>> get(@PageableDefault(page = 0, size = 10, sort = "name", direction = Direction.ASC) Pageable pageable,@RequestParam String name) {
-		Page<List<ArtistEntity>> lista;
-		try {
-			lista = artistService.findByNameContainingIgnoreCase(pageable, name);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().header("error", e.getMessage()).build();
-		}
-		return ResponseEntity.ok(lista);
-	}
-	
-	@PostMapping
-	public ResponseEntity<ArtistEntity> post(@RequestBody ArtistDTO dto){
-		ArtistEntity entidade = convertDTO2Entity(dto);
-		try {
-			artistService.save(entidade);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().header("error", e.getMessage()).build();
-		}
-		return ResponseEntity.status(HttpStatus.CREATED).body(entidade);
-	}
-	
-	@PutMapping("/{uuid}")
-	public ResponseEntity<ArtistEntity> put(@RequestBody ArtistDTO dto,@PathVariable UUID uuid){
-		ArtistEntity entidade = convertDTO2Entity(dto);
-		entidade.setUuid(uuid);
-		try {
-			artistService.save(entidade);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().header("error", e.getMessage()).build();
-		}
-		return ResponseEntity.status(HttpStatus.OK).body(entidade);
-		//return ResponseEntity.ok(entidade);
-	}
-	
-	@DeleteMapping("/{uuid}")
-	public ResponseEntity<?> delete(@PathVariable UUID uuid){
-		try {
-			artistService.deleteById(uuid);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().header("error", e.getMessage()).build();
-		}
-		return ResponseEntity.ok().build();
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 
