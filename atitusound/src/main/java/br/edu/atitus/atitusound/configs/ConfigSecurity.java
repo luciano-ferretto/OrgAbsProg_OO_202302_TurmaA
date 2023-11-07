@@ -5,10 +5,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class ConfigSecurity {
 	
+	private final AuthTokenFilter authTokenFilter;
+	
+	public ConfigSecurity(AuthTokenFilter authTokenFilter) {
+		super();
+		this.authTokenFilter = authTokenFilter;
+	}
+
+
 	@Bean
 	public SecurityFilterChain getFilterChain(HttpSecurity http) throws Exception {
 		http
@@ -17,7 +26,7 @@ public class ConfigSecurity {
 			.authorizeHttpRequests(auth -> auth
 					.requestMatchers("/auth/**").permitAll()
 					.anyRequest().authenticated())
-			.httpBasic();
+			.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
